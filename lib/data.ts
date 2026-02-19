@@ -3,6 +3,7 @@ export const navLinks = [
   { href: '/mission', label: 'Mission Control', emoji: '🧭' },
   { href: '/10k', label: '$10K Mission', emoji: '💰' },
   { href: '/actions', label: 'Daily Actions', emoji: '✅' },
+  { href: '/daily', label: 'Daily Numerology Script', emoji: '🔮' },
   { href: '/ugc', label: 'UGC Execution', emoji: '🎬' },
   { href: '/health', label: 'Health', emoji: '💪' },
   { href: '/memory', label: 'Memory Bank', emoji: '🧠' },
