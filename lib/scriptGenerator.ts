@@ -1,6 +1,24 @@
-import { DailyNumerology } from '@/lib/numerology';
+import { DailyNumerology, reduceToDigit } from '@/lib/numerology';
+
+type EnergyProfile = {
+  title: string;
+  core: string;
+  showsUp: string;
+  feelsLike: string;
+  doToday: string;
+  avoidToday: string;
+  creatorExample: string;
+  ctaAngle: string;
+  filmingTone: string;
+};
 
 export type DailyScript = {
+  headerLine: string;
+  introLine: string;
+  themeTitle: string;
+  themeLine: string;
+  mainEnergyMeaning: string;
+  secondaryEnergyMeaning: string;
   hook: string;
   body: string;
   practicalStep: string;
@@ -8,83 +26,163 @@ export type DailyScript = {
   filmingTip: string;
 };
 
-function fallbackScript(n: DailyNumerology): DailyScript {
-  return {
-    hook: `Today carries ${n.mainEnergy} & ${n.secondaryEnergy} energy — ${n.mainMeaning} meets ${n.secondaryMeaning}. If you've been waiting for a sign, this is it.`,
-    body: `${n.mainEnergy} energy is about ${n.mainMeaning.toLowerCase()}: zooming out, building the long game, and choosing aligned action over quick wins. ${n.secondaryEnergy} energy brings ${n.secondaryMeaning.toLowerCase()}, so your power today is starting with intention and moving with confidence. Ask yourself: what am I building that my future self will thank me for? Move one idea from your head into reality today.`,
-    practicalStep: `Take 10 minutes, write your top 1 aligned action, then complete it before noon. Keep it simple and fully committed.`,
-    cta: `Comment "${n.mainEnergy}${n.secondaryEnergy}" if you're claiming this energy today, and share this with someone who needs a reset.`,
-    filmingTip: `Film near a window with natural light, start with your hook in the first 2 seconds, and keep captions bold with key words like \"${n.mainMeaning}\" and \"${n.secondaryMeaning}\" highlighted.`,
-  };
-}
+const ENERGY_PROFILES: Record<number, EnergyProfile> = {
+  1: {
+    title: 'Initiator',
+    core: 'leadership, initiation, independence, and new beginnings',
+    showsUp: 'a push to stop waiting and start moving on your idea',
+    feelsLike: 'clarity, urgency, and a healthy "I can do this" confidence',
+    doToday: 'make the first move, decide quickly, and take ownership',
+    avoidToday: 'overthinking, waiting for perfect timing, or asking everyone for permission',
+    creatorExample: 'post the first version of your offer, series, or brand story even if it is not perfect yet',
+    ctaAngle: 'new beginning they are claiming',
+    filmingTone: 'confident, direct, and forward-moving',
+  },
+  2: {
+    title: 'Diplomat',
+    core: 'partnership, balance, duality, intuition, and diplomacy',
+    showsUp: 'sensitive communication, reading between the lines, and relationship awareness',
+    feelsLike: 'emotional sensitivity, softness, and desire for harmony',
+    doToday: 'collaborate, listen deeply, and choose timing over force',
+    avoidToday: 'people-pleasing, mixed signals, or suppressing your needs',
+    creatorExample: 'co-create content, send a thoughtful follow-up, or repair a strained conversation',
+    ctaAngle: 'relationship they want to harmonize',
+    filmingTone: 'warm, gentle, and reassuring',
+  },
+  3: {
+    title: 'Messenger',
+    core: 'communication, creativity, expression, joy, and social energy',
+    showsUp: 'fresh ideas, storytelling flow, and visibility opportunities',
+    feelsLike: 'playful confidence, inspiration, and desire to be seen',
+    doToday: 'speak up, publish, teach, and share your authentic voice',
+    avoidToday: 'rambling, distraction, or performing instead of connecting',
+    creatorExample: 'record a quick story-based reel that teaches one clear lesson',
+    ctaAngle: 'message they need to express',
+    filmingTone: 'animated, expressive, and upbeat',
+  },
+  4: {
+    title: 'Builder',
+    core: 'foundation, structure, stability, discipline, and grounded effort',
+    showsUp: 'focus on systems, routines, and what is practical long term',
+    feelsLike: 'serious focus, responsibility, and desire for order',
+    doToday: 'plan, simplify, and execute one concrete process improvement',
+    avoidToday: 'rigidity, pessimism, or getting lost in tiny details',
+    creatorExample: 'build your weekly posting workflow or clean up your client onboarding process',
+    ctaAngle: 'system they are building',
+    filmingTone: 'steady, clear, and grounded',
+  },
+  5: {
+    title: 'Explorer',
+    core: 'freedom, change, adventure, adaptability, and curiosity',
+    showsUp: 'unexpected opportunities, pivots, and experimentation',
+    feelsLike: 'restlessness, excitement, and hunger for expansion',
+    doToday: 'test a new angle, audience, or format and stay flexible',
+    avoidToday: 'impulsive choices, scattered attention, or reckless risk',
+    creatorExample: 'test a new hook style or content category and compare response data',
+    ctaAngle: 'change they are embracing',
+    filmingTone: 'energetic, dynamic, and curious',
+  },
+  6: {
+    title: 'Nurturer',
+    core: 'responsibility, care, relationships, harmony, and service',
+    showsUp: 'family focus, client care, and desire to protect what matters',
+    feelsLike: 'heart-led responsibility and emotional maturity',
+    doToday: 'lead with service, create support, and strengthen key relationships',
+    avoidToday: 'overgiving, guilt-driven decisions, or rescuing everyone',
+    creatorExample: 'publish a piece of content that solves one real pain point for your audience',
+    ctaAngle: 'person they will support today',
+    filmingTone: 'heart-centered, sincere, and grounded',
+  },
+  7: {
+    title: 'Seeker',
+    core: 'spiritual introspection, wisdom, analysis, and inner truth',
+    showsUp: 'deep thinking, pattern recognition, and desire for meaningful alignment',
+    feelsLike: 'quiet focus, sensitivity, and a need for space',
+    doToday: 'reflect, study, and make decisions from clarity instead of noise',
+    avoidToday: 'isolation spirals, cynicism, or analysis paralysis',
+    creatorExample: 'share one deeper insight from your own journey instead of surface tips',
+    ctaAngle: 'insight they are integrating',
+    filmingTone: 'calm, reflective, and intentional',
+  },
+  8: {
+    title: 'Executive',
+    core: 'power, abundance, material success, authority, and karmic results',
+    showsUp: 'money conversations, leadership opportunities, and accountability themes',
+    feelsLike: 'ambition, intensity, and strategic focus',
+    doToday: 'prioritize high-impact work, negotiate value, and lead boldly',
+    avoidToday: 'control battles, ego-driven decisions, or short-term greed',
+    creatorExample: 'raise your standards by refining pricing, boundaries, or offer positioning',
+    ctaAngle: 'bold move they are making',
+    filmingTone: 'strong, concise, and powerful',
+  },
+  9: {
+    title: 'Humanitarian',
+    core: 'completion, compassion, universal love, endings, and wisdom',
+    showsUp: 'closure, forgiveness, and letting go of what no longer aligns',
+    feelsLike: 'emotional release and soul-level perspective',
+    doToday: 'finish loose ends, release old narratives, and serve from compassion',
+    avoidToday: 'martyrdom, clinging to expired commitments, or emotional exhaustion',
+    creatorExample: 'close an old chapter and communicate the lesson your audience can apply today',
+    ctaAngle: 'what they are ready to release',
+    filmingTone: 'compassionate, mature, and soulful',
+  },
+  11: {
+    title: 'Intuitive Channel',
+    core: 'intuition, spiritual insight, inspiration, and enlightenment',
+    showsUp: 'meaningful signs, creative downloads, and heightened sensitivity',
+    feelsLike: 'electric intuition with moments of emotional intensity',
+    doToday: 'slow down enough to hear guidance, then act on one clear download',
+    avoidToday: 'doubt loops, spiritual bypassing, or ignoring your inner voice',
+    creatorExample: 'speak to camera about a message that came through and why it matters now',
+    ctaAngle: 'intuition they are trusting',
+    filmingTone: 'inspired, present, and magnetic',
+  },
+  22: {
+    title: 'Master Builder',
+    core: 'mastermind strategy, visionary planning, systems, and legacy-building',
+    showsUp: 'big ideas that need practical structure and execution discipline',
+    feelsLike: 'pressure to think bigger while staying methodical',
+    doToday: 'choose the long-game move and break vision into tangible next steps',
+    avoidToday: 'playing small, perfection paralysis, or abandoning the big picture',
+    creatorExample: 'turn one large dream into a 90-day execution roadmap and start day one now',
+    ctaAngle: 'legacy project they are starting',
+    filmingTone: 'bold, strategic, and visionary',
+  },
+  33: {
+    title: 'Master Teacher',
+    core: 'healing, compassion, spiritual guidance, and service-led leadership',
+    showsUp: 'teaching moments, mentoring opportunities, and emotional healing conversations',
+    feelsLike: 'deep empathy with a call to lead through love',
+    doToday: 'teach from lived experience and give practical hope',
+    avoidToday: 'self-neglect, savior complex, or carrying everyone else emotionally',
+    creatorExample: 'create a short lesson that helps someone heal and move one step forward',
+    ctaAngle: 'lesson they are ready to teach or live',
+    filmingTone: 'nurturing, wise, and clear',
+  },
+};
 
-function parseSection(content: string, key: string): string {
-  const regex = new RegExp(`${key}:\\s*([\\s\\S]*?)(?=\\n(?:HOOK|BODY|PRACTICAL_STEP|CTA|FILMING_TIP):|$)`, 'i');
-  const match = content.match(regex);
-  return match?.[1]?.trim() ?? '';
-}
-
-async function generateWithAnthropic(n: DailyNumerology): Promise<DailyScript | null> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) return null;
-
-  const prompt = `You are writing a daily TikTok numerology script in a warm, relatable, spiritually grounded voice.
-
-Date: ${n.displayDate}
-Main Energy: ${n.mainEnergy} (${n.mainMeaning})
-Secondary Energy: ${n.secondaryEnergy} (${n.secondaryMeaning})
-
-Write output using EXACT labels:
-HOOK:
-BODY:
-PRACTICAL_STEP:
-CTA:
-FILMING_TIP:
-
-Requirements:
-- Hook: 3-5 seconds
-- Body: 45-60 seconds
-- Practical step: 15 seconds, actionable today
-- CTA: 5-7 seconds, engagement-focused
-- Filming tip: practical creator guidance
-- Must specifically interpret ${n.mainEnergy} and ${n.secondaryEnergy} together.
-- Do not include markdown or extra labels.`;
-
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: process.env.ANTHROPIC_MODEL ?? 'claude-3-5-sonnet-20241022',
-      max_tokens: 900,
-      messages: [{ role: 'user', content: prompt }],
-    }),
-  });
-
-  if (!response.ok) return null;
-  const data = await response.json();
-  const text = data?.content?.[0]?.text;
-  if (!text) return null;
-
-  const script: DailyScript = {
-    hook: parseSection(text, 'HOOK'),
-    body: parseSection(text, 'BODY'),
-    practicalStep: parseSection(text, 'PRACTICAL_STEP'),
-    cta: parseSection(text, 'CTA'),
-    filmingTip: parseSection(text, 'FILMING_TIP'),
-  };
-
-  if (!script.hook || !script.body || !script.practicalStep || !script.cta || !script.filmingTip) {
-    return null;
-  }
-
-  return script;
+function getEnergyProfile(energy: number): EnergyProfile {
+  return ENERGY_PROFILES[energy] ?? ENERGY_PROFILES[reduceToDigit(energy)];
 }
 
 export async function generateDailyScript(n: DailyNumerology): Promise<DailyScript> {
-  const aiScript = await generateWithAnthropic(n);
-  return aiScript ?? fallbackScript(n);
+  const main = getEnergyProfile(n.mainEnergy);
+  const secondary = getEnergyProfile(n.secondaryEnergy);
+
+  const summary = `${main.title} energy meets ${secondary.title.toLowerCase()} energy`;
+  const contentUse = `making aligned decisions, creating confident content, and taking practical action`;
+
+  return {
+    headerLine: `Today — ${n.displayDate}: ${n.mainEnergy} & ${n.secondaryEnergy} Energy`,
+    introLine: `This is ${summary} — great for ${contentUse}.`,
+    themeTitle: `🎥 TikTok / YouTube Shorts Script – ${n.mainEnergy} & ${n.secondaryEnergy} Energy`,
+    themeLine: `Theme: ${main.title} Vision + ${secondary.title} Action`,
+    mainEnergyMeaning: `${n.mainEnergy}: ${main.core}`,
+    secondaryEnergyMeaning: `${n.secondaryEnergy}: ${secondary.core}`,
+    hook: `If you have been sitting on a big idea, today is the day to move it from vision to first action.`,
+    body: `Your ${n.mainEnergy} energy is ${main.core}, so it shows up today as ${main.showsUp}. Your ${n.secondaryEnergy} energy brings ${secondary.core}, which adds ${secondary.showsUp}. Together, this combination helps you think bigger and execute cleaner. You may feel ${main.feelsLike}, plus ${secondary.feelsLike}. Do this: ${main.doToday}. Then anchor it with ${secondary.doToday}. Avoid ${main.avoidToday} and ${secondary.avoidToday}. Example: ${main.creatorExample}; then use ${secondary.creatorExample}.`,
+    practicalStep: `Take 20 minutes today: write one bold outcome for the next 90 days, break it into three milestones, then complete the first 15-minute task before the day ends.`,
+    cta: `Comment one specific move you are claiming today, and drop your Life Path number below. I will reply with how your Life Path works with ${n.mainEnergy} & ${n.secondaryEnergy} energy.`,
+    filmingTip: `Open with: "Today is ${n.mainEnergy} and ${n.secondaryEnergy} energy—so stop waiting and start building." Deliver with a ${main.filmingTone} tone, then shift to ${secondary.filmingTone} pacing for the practical step. Keep eye contact, use confident hand gestures, and pause before the CTA so it lands clearly.`,
+  };
 }

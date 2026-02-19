@@ -9,19 +9,18 @@ export type DailyNumerology = {
 };
 
 const ENERGY_MEANINGS: Record<number, string> = {
-  1: 'Initiation',
-  2: 'Harmony',
-  3: 'Expression',
-  4: 'Foundation',
-  5: 'Change',
-  6: 'Nurturing',
-  7: 'Reflection',
-  8: 'Power',
-  9: 'Completion',
-  10: 'Manifestation',
-  11: 'Intuition',
-  22: 'Mastermind',
-  33: 'Compassion',
+  1: 'Leadership & new beginnings',
+  2: 'Partnership & intuitive balance',
+  3: 'Creative expression & communication',
+  4: 'Structure, discipline, and foundation',
+  5: 'Change, freedom, and adaptability',
+  6: 'Care, responsibility, and harmony',
+  7: 'Introspection, wisdom, and spiritual depth',
+  8: 'Power, abundance, and karmic accountability',
+  9: 'Completion, compassion, and release',
+  11: 'Intuition, inspiration, and spiritual insight',
+  22: 'Master builder vision, strategy, and legacy',
+  33: 'Master teacher healing, service, and guidance',
 };
 
 function sumDigits(value: string): number {
@@ -41,6 +40,11 @@ export function reduceToDigit(value: number): number {
   return current;
 }
 
+function reduceWithMasterNumbers(value: number): number {
+  if (value === 11 || value === 22 || value === 33) return value;
+  return reduceToDigit(value);
+}
+
 export function getDailyNumerology(date = new Date()): DailyNumerology {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -49,8 +53,9 @@ export function getDailyNumerology(date = new Date()): DailyNumerology {
   const dateISO = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   const allDigits = `${day}${month}${year}`;
 
-  const mainEnergy = sumDigits(allDigits);
-  const secondaryEnergy = reduceToDigit(day);
+  const mainRaw = sumDigits(allDigits);
+  const mainEnergy = reduceWithMasterNumbers(mainRaw);
+  const secondaryEnergy = reduceWithMasterNumbers(reduceToDigit(day));
 
   const displayDate = date.toLocaleDateString('en-US', {
     month: 'long',
@@ -58,8 +63,8 @@ export function getDailyNumerology(date = new Date()): DailyNumerology {
     year: 'numeric',
   });
 
-  const mainMeaning = ENERGY_MEANINGS[mainEnergy] ?? 'Alignment';
-  const secondaryMeaning = ENERGY_MEANINGS[secondaryEnergy] ?? 'Flow';
+  const mainMeaning = ENERGY_MEANINGS[mainEnergy] ?? ENERGY_MEANINGS[reduceToDigit(mainEnergy)] ?? 'Alignment';
+  const secondaryMeaning = ENERGY_MEANINGS[secondaryEnergy] ?? ENERGY_MEANINGS[reduceToDigit(secondaryEnergy)] ?? 'Flow';
 
   return {
     dateISO,

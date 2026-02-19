@@ -6,6 +6,12 @@ export type DailyPayload = {
   secondaryEnergy: number;
   meanings: string;
   script: {
+    headerLine: string;
+    introLine: string;
+    themeTitle: string;
+    themeLine: string;
+    mainEnergyMeaning: string;
+    secondaryEnergyMeaning: string;
     hook: string;
     body: string;
     practicalStep: string;
