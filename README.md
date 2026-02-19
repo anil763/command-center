@@ -42,6 +42,21 @@ No required environment variables are needed to run.
 - API routes are dynamic where needed
 - Push repo and import to Vercel
 
+## Authentication (Required)
+
+This app is password-protected.
+
+- Set `COMMAND_CENTER_PASSWORD` in Vercel Environment Variables.
+- Optional: set `COMMAND_CENTER_SESSION_SECRET` for custom HMAC signing secret.
+- If `COMMAND_CENTER_PASSWORD` is not set, the app falls back to default password: `anil2026`.
+
+### Behavior
+
+- `/login` is public.
+- `/api/auth/login` and `/api/auth/logout` are public.
+- All other routes require authentication.
+- Session is stored in an httpOnly cookie with `SameSite=Strict` and `Secure` enabled in production.
+
 ## Notes
 
 If documents fail to load, the UI shows a non-crashing fallback and API returns structured errors for debugging.

@@ -2,26 +2,53 @@
 
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { navLinks } from "@/lib/data";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } finally {
+      setLoggingOut(false);
+      router.replace("/login");
+      router.refresh();
+    }
+  };
+
+  if (pathname === "/login") {
+    return <div className="min-h-screen bg-[#0a0a0a] text-gray-100">{children}</div>;
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-gray-100">
       <header className="sticky top-0 z-30 border-b border-[#222222] bg-[#0a0a0a]/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
           <h1 className="text-sm font-semibold sm:text-base">Second Brain — Anil&apos;s Command Center</h1>
-          <button
-            aria-label="Toggle navigation"
-            className="interactive rounded-lg border border-border p-2 md:hidden hover:border-revenue"
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? <X size={18} /> : <Menu size={18} />}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleLogout}
+              disabled={loggingOut}
+              className="rounded-lg border border-[#2f2f2f] bg-[#121212] px-3 py-1.5 text-xs font-medium text-gray-200 transition hover:border-[#4b4b4b] hover:bg-[#1a1a1a] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loggingOut ? "Logging out..." : "Logout"}
+            </button>
+            <button
+              aria-label="Toggle navigation"
+              className="interactive rounded-lg border border-border p-2 md:hidden hover:border-revenue"
+              onClick={() => setOpen((v) => !v)}
+            >
+              {open ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
         </div>
       </header>
       <div className="mx-auto flex max-w-7xl">
