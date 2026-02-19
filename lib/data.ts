@@ -5,6 +5,7 @@ export const navLinks = [
   { href: '/actions', label: 'Daily Actions', emoji: '✅' },
   { href: '/daily', label: 'Daily Numerology Script', emoji: '🔮' },
   { href: '/ugc', label: 'UGC Execution', emoji: '🎬' },
+  { href: '/vault', label: "Gentlemen's Vault", emoji: '💎' },
   { href: '/health', label: 'Health', emoji: '💪' },
   { href: '/memory', label: 'Memory Bank', emoji: '🧠' },
   { href: '/docs', label: 'Browse Documents', emoji: '📚' },
