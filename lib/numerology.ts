@@ -21,6 +21,12 @@ const ENERGY_MEANINGS: Record<number, string> = {
   11: 'Intuition, inspiration, and spiritual insight',
   22: 'Master builder vision, strategy, and legacy',
   33: 'Master teacher healing, service, and guidance',
+  44: 'Archangel support, divine protection, and grounding',
+  55: 'Freedom, adventure, and transformative change',
+  66: 'Divine love, nurturing, and universal harmony',
+  77: 'Spiritual awakening, cosmic alignment, and mastery',
+  88: 'Infinity, abundance cycles, and karmic resolution',
+  99: 'Enlightenment, completion of soul mission, and ascension',
 };
 
 function sumDigits(value: string): number {
@@ -41,7 +47,8 @@ export function reduceToDigit(value: number): number {
 }
 
 function reduceWithMasterNumbers(value: number): number {
-  if (value === 11 || value === 22 || value === 33) return value;
+  const masterNumbers = [11, 22, 33, 44, 55, 66, 77, 88, 99];
+  if (masterNumbers.includes(value)) return value;
   return reduceToDigit(value);
 }
 
