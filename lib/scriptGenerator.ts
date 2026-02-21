@@ -13,17 +13,13 @@ type EnergyProfile = {
 };
 
 export type DailyScript = {
-  headerLine: string;
-  introLine: string;
-  themeTitle: string;
-  themeLine: string;
-  mainEnergyMeaning: string;
-  secondaryEnergyMeaning: string;
+  date: string;
+  energyLabel: string;
+  title: string;
   hook: string;
   body: string;
-  practicalStep: string;
+  practicalValue: string;
   cta: string;
-  filmingTip: string;
 };
 
 const ENERGY_PROFILES: Record<number, EnergyProfile> = {
@@ -169,20 +165,57 @@ export async function generateDailyScript(n: DailyNumerology): Promise<DailyScri
   const main = getEnergyProfile(n.mainEnergy);
   const secondary = getEnergyProfile(n.secondaryEnergy);
 
-  const summary = `${main.title} energy meets ${secondary.title.toLowerCase()} energy`;
-  const contentUse = `making aligned decisions, creating confident content, and taking practical action`;
+  // Generate hook (3-5 second opener)
+  const hookOptions = [
+    `If you feel ${main.feelsLike.toLowerCase()}... but also ${secondary.feelsLike.toLowerCase()} today — this is why.`,
+    `Today's a mix of ${main.title.toLowerCase()} and ${secondary.title.toLowerCase()} — and that creates tension.`,
+    `You might feel restless about ${main.showsUp.toLowerCase()}... but hesitant because of ${secondary.showsUp.toLowerCase()}.`,
+  ];
+  const hook = hookOptions[0];
+
+  // Generate body (relatable + real)
+  const bodyText = `Today's main energy is ${n.mainEnergy} — ${main.core.toLowerCase()}. The secondary energy is ${n.secondaryEnergy} — ${secondary.core.toLowerCase()}. This creates tension.
+
+Part of you: ${main.feelsLike.toLowerCase()}.
+Part of you: ${secondary.feelsLike.toLowerCase()}.
+
+You may feel:
+• ${main.feelsLike.toLowerCase()}
+• ${secondary.feelsLike.toLowerCase()}
+• A mix of both pulling different directions
+
+That's ${n.mainEnergy} wanting ${main.showsUp.toLowerCase()}. And ${n.secondaryEnergy} wanting ${secondary.showsUp.toLowerCase()}.
+
+The move today: ${main.doToday.toLowerCase()}, but with ${secondary.doToday.toLowerCase()}.`;
+
+  // Generate practical value (actionable steps)
+  const practicalValue = `Do this today:
+1️⃣ Name where you feel the tension (${main.title.toLowerCase()} vs ${secondary.title.toLowerCase()}).
+2️⃣ Instead of forcing it — soften your approach.
+3️⃣ Make the change, but keep the care.
+
+Example: Instead of "${main.creatorExample.toLowerCase()}" — try "${secondary.creatorExample.toLowerCase()}".
+
+Small shifts under ${n.mainEnergy} & ${n.secondaryEnergy} prevent big messes.`;
+
+  // Generate CTA
+  const ctaText = `Comment "I move smart" if you're choosing aligned action today. Drop your life path below — I'll tell you how this energy hits your chart.`;
+
+  // Generate title
+  const titleOptions = [
+    `Feeling Off? Don't ${main.title.toUpperCase()}.`,
+    `The ${main.title.toUpperCase()}/${secondary.title.toUpperCase()} Tension Is Real.`,
+    `Want Change? Do This Instead.`,
+  ];
+  const title = titleOptions[0];
 
   return {
-    headerLine: `Today — ${n.displayDate}: ${n.mainEnergy} & ${n.secondaryEnergy} Energy`,
-    introLine: `This is ${summary} — great for ${contentUse}.`,
-    themeTitle: `🎥 TikTok / YouTube Shorts Script – ${n.mainEnergy} & ${n.secondaryEnergy} Energy`,
-    themeLine: `Theme: ${main.title} Vision + ${secondary.title} Action`,
-    mainEnergyMeaning: `${n.mainEnergy}: ${main.core}`,
-    secondaryEnergyMeaning: `${n.secondaryEnergy}: ${secondary.core}`,
-    hook: `If you have been sitting on a big idea, today is the day to move it from vision to first action.`,
-    body: `Your ${n.mainEnergy} energy is ${main.core}, so it shows up today as ${main.showsUp}. Your ${n.secondaryEnergy} energy brings ${secondary.core}, which adds ${secondary.showsUp}. Together, this combination helps you think bigger and execute cleaner. You may feel ${main.feelsLike}, plus ${secondary.feelsLike}. Do this: ${main.doToday}. Then anchor it with ${secondary.doToday}. Avoid ${main.avoidToday} and ${secondary.avoidToday}. Example: ${main.creatorExample}; then use ${secondary.creatorExample}.`,
-    practicalStep: `Take 20 minutes today: write one bold outcome for the next 90 days, break it into three milestones, then complete the first 15-minute task before the day ends.`,
-    cta: `Comment one specific move you are claiming today, and drop your Life Path number below. I will reply with how your Life Path works with ${n.mainEnergy} & ${n.secondaryEnergy} energy.`,
-    filmingTip: `Open with: "Today is ${n.mainEnergy} and ${n.secondaryEnergy} energy—so stop waiting and start building." Deliver with a ${main.filmingTone} tone, then shift to ${secondary.filmingTone} pacing for the practical step. Keep eye contact, use confident hand gestures, and pause before the CTA so it lands clearly.`,
+    date: n.displayDate,
+    energyLabel: `${n.mainEnergy} & ${n.secondaryEnergy} Energy`,
+    title,
+    hook: `🔥 "${hook}" (Pause)`,
+    body: bodyText,
+    practicalValue: practicalValue,
+    cta: `🔥 ${ctaText}`,
   };
 }
