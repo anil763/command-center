@@ -55,7 +55,7 @@ export default function SpiritualGrowthPage() {
             <div className="p-4 border-t bg-slate-50">
               <p className="text-sm mb-3">Email List (10K+) → Courses ($197-497) → Workshops ($997) → VIP Readings ($297-497) + Vault ($44/mo) + Partnerships + Affiliate</p>
               <p className="text-sm font-bold">Key: Build email list that generates revenue independent of TikTok. Everything else is leverage OFF that list.</p>
-              <p className="text-sm text-muted mt-3">If TikTok algorithm breaks tomorrow, your email list keeps generating revenue. That's the power.</p>
+              <p className="text-sm text-muted mt-3">If TikTok algorithm breaks tomorrow, your email list keeps generating revenue. That&apos;s the power.</p>
             </div>
           )}
         </div>
@@ -122,9 +122,9 @@ export default function SpiritualGrowthPage() {
               <div className="p-3 bg-white rounded border">
                 <strong>Lead Magnets (FREE → EMAIL):</strong>
                 <ul className="mt-2 text-xs space-y-1">
-                  <li>• Magnet 1: "Life Path Number Guide" (PDF) — 2-3% convert to reading</li>
-                  <li>• Magnet 2: "Your Numbers Explained" (3-email sequence) — 3-5% convert</li>
-                  <li>• Magnet 3: "Manifestation Through Numbers" (Video + PDF) — 5-7% convert</li>
+                  <li>• Magnet 1: &quot;Life Path Number Guide&quot; (PDF) — 2-3% convert to reading</li>
+                  <li>• Magnet 2: &quot;Your Numbers Explained&quot; (3-email sequence) — 3-5% convert</li>
+                  <li>• Magnet 3: &quot;Manifestation Through Numbers&quot; (Video + PDF) — 5-7% convert</li>
                 </ul>
               </div>
               <div className="p-3 bg-white rounded border">
@@ -208,7 +208,7 @@ export default function SpiritualGrowthPage() {
             <div className="p-4 border-t bg-slate-50 space-y-3 text-sm">
               <div className="p-3 bg-white rounded border">
                 <strong>Partnership 1: Business Coach Referrals</strong>
-                <p className="text-xs mt-2">Target 5-10 coaches. Offer: "I do readings for your clients ($297 each). You get 20% commission."</p>
+                <p className="text-xs mt-2">Target 5-10 coaches. Offer: &quot;I do readings for your clients ($297 each). You get 20% commission.&quot;</p>
                 <p className="text-xs mt-1"><strong>Expected:</strong> 10-15 referrals/mo = <strong>$2,970-4,455/mo</strong></p>
               </div>
               <div className="p-3 bg-white rounded border">
@@ -233,7 +233,7 @@ export default function SpiritualGrowthPage() {
             onClick={() => setExpandedSection(expandedSection === 'channel5' ? null : 'channel5')}
             className="w-full p-4 text-left font-bold hover:bg-slate-50 flex justify-between items-center"
           >
-            Channel 5: Gentlemen's Vault (Recurring Revenue)
+            Channel 5: Gentlemen&apos;s Vault (Recurring Revenue)
             <span>{expandedSection === 'channel5' ? '−' : '+'}</span>
           </button>
           {expandedSection === 'channel5' && (
@@ -341,7 +341,7 @@ export default function SpiritualGrowthPage() {
 
       <div className="bg-green-50 p-4 rounded-lg">
         <h3 className="font-bold mb-2">The Trap to Avoid</h3>
-        <p className="text-sm"><strong>❌ Don't:</strong> Just get more TikTok followers and hope for sales</p>
+        <p className="text-sm"><strong>❌ Don&apos;t:</strong> Just get more TikTok followers and hope for sales</p>
         <p className="text-sm mt-2"><strong>✅ Do:</strong> Build systems that compound (email, SEO, partnerships, products)</p>
         <p className="text-sm mt-2">One viral video = temporary spike. One SEO article = permanent traffic stream (for years). One email subscriber = repeated revenue opportunity.</p>
       </div>

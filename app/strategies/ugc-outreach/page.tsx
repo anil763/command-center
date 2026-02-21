@@ -101,7 +101,7 @@ export default function UGCOutreachPage() {
             <div className="p-4 border-t bg-slate-50 space-y-4 text-sm">
               <div className="p-3 bg-white rounded border">
                 <strong>Day 1: Hook Email</strong>
-                <p className="text-xs mt-1">Subject: "Quick idea for [Company]"</p>
+                <p className="text-xs mt-1">Subject: &quot;Quick idea for [Company]&quot;</p>
                 <p className="text-xs text-muted mt-1">Mention something specific about THEM. No fluff. Low commitment ask (10 min call).</p>
               </div>
               <div className="p-3 bg-white rounded border">
@@ -111,18 +111,18 @@ export default function UGCOutreachPage() {
               </div>
               <div className="p-3 bg-white rounded border">
                 <strong>Day 5: Social Proof Email</strong>
-                <p className="text-xs mt-1">Mention competitor who's doing this + results</p>
+                <p className="text-xs mt-1">Mention competitor who&apos;s doing this + results</p>
                 <p className="text-xs text-muted mt-1">3.2x conversion lift. Social proof + objection handling.</p>
               </div>
               <div className="p-3 bg-white rounded border">
                 <strong>Day 7: Call Booking</strong>
-                <p className="text-xs mt-1">"Last check-in from my end"</p>
+                <p className="text-xs mt-1">&quot;Last check-in from my end&quot;</p>
                 <p className="text-xs text-muted mt-1">Calendly link + clear ask: yes or defer 3 months.</p>
               </div>
               <div className="p-3 bg-white rounded border">
                 <strong>Day 10: Proposal Follow-up</strong>
                 <p className="text-xs mt-1">Only if call happened + proposal sent</p>
-                <p className="text-xs text-muted mt-1">"Looking to close this month" — urgency + follow-up.</p>
+                <p className="text-xs text-muted mt-1">&quot;Looking to close this month&quot; — urgency + follow-up.</p>
               </div>
             </div>
           )}

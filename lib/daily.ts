@@ -6,17 +6,13 @@ export type DailyPayload = {
   secondaryEnergy: number;
   meanings: string;
   script: {
-    headerLine: string;
-    introLine: string;
-    themeTitle: string;
-    themeLine: string;
-    mainEnergyMeaning: string;
-    secondaryEnergyMeaning: string;
+    date: string;
+    energyLabel: string;
+    title: string;
     hook: string;
     body: string;
-    practicalStep: string;
+    practicalValue: string;
     cta: string;
-    filmingTip: string;
   };
   generatedAt: string;
 };
