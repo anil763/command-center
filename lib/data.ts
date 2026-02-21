@@ -1,6 +1,7 @@
 export const navLinks = [
   { href: '/', label: 'Revenue Dashboard', emoji: '🎯' },
   { href: '/mission', label: 'Mission Control', emoji: '🧭' },
+  { href: '/strategies', label: 'Strategic Plans', emoji: '🗺️' },
   { href: '/10k', label: '$10K Mission', emoji: '💰' },
   { href: '/actions', label: 'Daily Actions', emoji: '✅' },
   { href: '/daily', label: 'Daily Numerology Script', emoji: '🔮' },
